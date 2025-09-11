@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shanif's Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f9;
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 4px;
+            background-color: #6366f1;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-3xl font-bold">Muhammad Shanif</h1>
+            <nav class="mt-4 md:mt-0">
+                <ul class="flex space-x-6 text-lg font-medium">
+                    <li><a href="#about" class="hover:text-indigo-200 transition-colors duration-300">About</a></li>
+                    <li><a href="#skills" class="hover:text-indigo-200 transition-colors duration-300">Skills</a></li>
+                    <li><a href="#projects" class="hover:text-indigo-200 transition-colors duration-300">Projects</a></li>
+                    <li><a href="#contact" class="hover:text-indigo-200 transition-colors duration-300">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <!-- About Section -->
+        <section id="about" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 section-title">About Me</h2>
+            <p class="mt-4 text-gray-600 leading-relaxed text-lg">
+                I am a passionate and dedicated Information Science and Engineering student at the University of Visvesvaraya College of Engineering, expected to graduate in 2028. I have a strong foundation in a variety of programming languages, including Python and Java. My interests lie in developing innovative solutions, from creating a cryptocurrency on the Solana Blockchain to building Android applications like MemeMania, a meme-sharing app. I am constantly seeking to expand my knowledge and apply my skills to new and challenging projects.
+            </p>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 section-title">Skills</h2>
+            <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                <div class="bg-gray-100 p-4 rounded-lg text-center text-gray-700 font-medium">Python</div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center text-gray-700 font-medium">Java</div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center text-gray-700 font-medium">C++ (basic)</div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center text-gray-700 font-medium">C (basic)</div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center text-gray-700 font-medium">Rust (basic)</div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 section-title">Projects</h2>
+            <div class="space-y-8 mt-4">
+
+                <!-- Blockchain Project -->
+                <div class="border-b pb-4 last:border-b-0">
+                    <h3 class="text-xl font-semibold text-indigo-600">Blockchain</h3>
+                    <p class="mt-2 text-gray-600 leading-relaxed">
+                        I created my own cryptocurrency on the Solana Blockchain. This project involved creating accounts, setting up an admin account to mint coins, creating user wallets, and assigning metadata to the coin. I also developed a system to automatically send a specific amount of the cryptocurrency to multiple addresses.
+                    </p>
+                </div>
+
+                <!-- Android Apps -->
+                <div class="border-b pb-4 last:border-b-0">
+                    <h3 class="text-xl font-semibold text-indigo-600">Android Apps</h3>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 leading-relaxed space-y-2">
+                        <li>
+                            <strong class="font-medium">MemeMania: API based meme sharing app</strong>
+                            <p>An Android app with a curated catalog of memes from an API that scrapes the latest memes from Reddit. The app allows users to easily share memes with friends.</p>
+                        </li>
+                        <li>
+                            <strong class="font-medium">Tic Tac Toe game</strong>
+                            <p>A simple Android multiplayer game of Tic Tac Toe.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Python Projects -->
+                <div class="border-b pb-4 last:border-b-0">
+                    <h3 class="text-xl font-semibold text-indigo-600">Python</h3>
+                    <p class="mt-2 text-gray-600 leading-relaxed">
+                        <strong class="font-medium">BlackJack against bot</strong>
+                        <p>A BlackJack game where the dealer is a Python script.</p>
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-bold text-gray-800 section-title">Contact</h2>
+            <div class="mt-4 text-gray-600 text-lg">
+                <p>Email: <a href="mailto:mohmmedshanif5@gmail.com" class="text-indigo-600 hover:underline">mohmmedshanif5@gmail.com</a></p>
+                <p class="mt-2">Phone: (+91) 959141033</p>
+                </p>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2024 Muhammad Shanif. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
