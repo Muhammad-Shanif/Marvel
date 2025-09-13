@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bubble-effect {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .bubble-effect::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+            z-index: -1;
+        }
+
+        .bubble-effect:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 p-8">
+
+    <div class="max-w-4xl mx-auto app-container">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-blue-800 rounded-lg p-4 bg-blue-50 shadow-lg">Resource Library</h1>
+        </header>
+
+        <!-- Add Resource Section (C in CRUD) -->
+        <div class="mb-8 p-6 bg-white rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Add New Resource</h2>
+            <form id="addResourceForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="text" id="resourceTitle" placeholder="Title" required
+                    class="p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <input type="text" id="resourceAuthor" placeholder="Author" required
+                    class="p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <input type="text" id="resourceType" placeholder="Type (e.g., Book, Article)" required
+                    class="p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <button type="submit"
+                    class="col-span-1 md:col-span-3 bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 bubble-effect">
+                    Add Resource
+                </button>
+            </form>
+        </div>
+
+        <!-- Add Author Section (C in CRUD) -->
+        <div class="mb-8 p-6 bg-white rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Add New Author</h2>
+            <form id="addAuthorForm" class="flex gap-4">
+                <input type="text" id="authorName" placeholder="Author Name" required
+                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                <button type="submit"
+                    class="bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-teal-700 transition-colors duration-300 bubble-effect">
+                    Add Author
+                </button>
+            </form>
+        </div>
+
+        <!-- Resources Section (R in CRUD) -->
+        <div class="mb-8 p-6 bg-white rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Resources</h2>
+            <ul id="resourceList">
+                <p class="text-center text-gray-500">Loading resources...</p>
+            </ul>
+        </div>
+
+        <!-- Authors Section (R in CRUD) -->
+        <div class="mb-8 p-6 bg-white rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Authors</h2>
+            <ul id="authorList">
+                <p class="text-center text-gray-500">Loading authors...</p>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:3000/api';
+
+        const resourceList = document.getElementById('resourceList');
+        const authorList = document.getElementById('authorList');
+        const addResourceForm = document.getElementById('addResourceForm');
+        const addAuthorForm = document.getElementById('addAuthorForm');
+
+        // Function to fetch and display resources
+        const fetchResources = async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/resources`);
+                const resources = await response.json();
+                resourceList.innerHTML = '';
+                if (resources.length === 0) {
+                    resourceList.innerHTML = '<p class="text-gray-500 text-center">No resources found. Add one above!</p>';
+                } else {
+                    resources.forEach(resource => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border-l-4 border-blue-500 mb-2';
+                        li.innerHTML = `
+                            <div>
+                                <h3 class="font-bold text-lg">${resource.title}</h3>
+                                <p class="text-sm text-gray-600">Author: ${resource.author}</p>
+                                <p class="text-xs text-gray-500">Type: ${resource.type}</p>
+                            </div>
+                            <button onclick="deleteResource('${resource._id}')" class="text-red-500 hover:text-red-700 transition-colors duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 112 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        `;
+                        resourceList.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching resources:", error);
+                resourceList.innerHTML = '<p class="text-red-500 text-center">Failed to load resources. Is the server running?</p>';
+            }
+        };
+
+        // Function to fetch and display authors
+        const fetchAuthors = async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/authors`);
+                const authors = await response.json();
+                authorList.innerHTML = '';
+                if (authors.length === 0) {
+                    authorList.innerHTML = '<p class="text-gray-500 text-center">No authors found. Add one above!</p>';
+                } else {
+                    authors.forEach(author => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border-l-4 border-teal-500 mb-2';
+                        li.innerHTML = `
+                            <p class="font-bold text-lg">${author.name}</p>
+                            <button onclick="deleteAuthor('${author._id}')" class="text-red-500 hover:text-red-700 transition-colors duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 112 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        `;
+                        authorList.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching authors:", error);
+                authorList.innerHTML = '<p class="text-red-500 text-center">Failed to load authors. Is the server running?</p>';
+            }
+        };
+
+        // Add a new resource
+        addResourceForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('resourceTitle').value;
+            const author = document.getElementById('resourceAuthor').value;
+            const type = document.getElementById('resourceType').value;
+
+            try {
+                await fetch(`${BASE_URL}/resources`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, author, type })
+                });
+                addResourceForm.reset();
+                fetchResources(); // Refresh the list
+            } catch (error) {
+                console.error("Error adding resource:", error);
+            }
+        });
+
+        // Add a new author
+        addAuthorForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('authorName').value;
+
+            try {
+                await fetch(`${BASE_URL}/authors`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name })
+                });
+                addAuthorForm.reset();
+                fetchAuthors(); // Refresh the list
+            } catch (error) {
+                console.error("Error adding author:", error);
+            }
+        });
+
+        // Delete a resource
+        window.deleteResource = async (id) => {
+            try {
+                await fetch(`${BASE_URL}/resources/${id}`, { method: 'DELETE' });
+                fetchResources(); // Refresh the list
+            } catch (error) {
+                console.error("Error deleting resource:", error);
+            }
+        };
+
+        // Delete an author
+        window.deleteAuthor = async (id) => {
+            try {
+                await fetch(`${BASE_URL}/authors/${id}`, { method: 'DELETE' });
+                fetchAuthors(); // Refresh the list
+            } catch (error) {
+                console.error("Error deleting author:", error);
+            }
+        };
+
+        // Initial fetch to load data when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchResources();
+            fetchAuthors();
+        });
+
+    </script>
+
+</body>
+
+</html>
